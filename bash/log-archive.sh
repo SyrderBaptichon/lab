@@ -4,10 +4,12 @@
 ##----- Purpose : A tool to archive logs from thi CLI with the date and time
 ##----- Usage : ./log archive <log-directory>
 ##----- Project from roadmap.sh (https://roadmap.sh/projects/log-archive-tool)
+##----- PS : Creates the archives in the "log-archives" folder in your user home directory
+##----- PS-bis : Might havr to execute as "sudo" if you do not have read permissions to certain log files
 
 set -euo pipefail  # Exit on error, undefined vars, pipe failures
 
-echo "Usage: $0 <log-directory>" ; echo "Example: $0 /var/log" || exit 1
+[[ $# -eq 0 ]] && { echo "Usage: $0 <log-directory>"; echo "Example: $0 /var/log"; exit 1; }
 
 LOG_DIR="$1"
 
@@ -18,7 +20,7 @@ LOG_DIR="$1"
 [[ -r "$LOG_DIR" ]] || { echo "Error: No read permission for directory '$LOG_DIR'"; exit 1; }
 
 # Create archive directory
-ARCHIVE_DIR="$LOG_DIR/archive"
+ARCHIVE_DIR="$HOME/log-archives"
 mkdir -p "$ARCHIVE_DIR"
 
 # Generate timestamp for archive name
