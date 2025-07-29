@@ -4,11 +4,12 @@
 ##----- Purpose : A tool to archive logs from thi CLI with the date and time
 ##----- Usage : ./log archive <log-directory>
 ##----- Project from roadmap.sh (https://roadmap.sh/projects/log-archive-tool)
-##----- PS : Creates the archives in the "log-archives" folder in your user home directory
-##----- PS-bis : Might havr to execute as "sudo" if you do not have read permissions to certain log files
+##----- PS : Creates the archives in the "log-archives" folder in your user home directory or root directory if using sudo
+##----- PS-bis : Might have to execute as "sudo" if you do not have read permissions to certain log files
 
 set -euo pipefail  # Exit on error, undefined vars, pipe failures
 
+# Check for arguments
 [[ $# -eq 0 ]] && { echo "Usage: $0 <log-directory>"; echo "Example: $0 /var/log"; exit 1; }
 
 LOG_DIR="$1"
@@ -19,9 +20,8 @@ LOG_DIR="$1"
 # Check read permissions
 [[ -r "$LOG_DIR" ]] || { echo "Error: No read permission for directory '$LOG_DIR'"; exit 1; }
 
-# Create archive directory
+# Archive directory
 ARCHIVE_DIR="$HOME/log-archives"
-mkdir -p "$ARCHIVE_DIR"
 
 # Generate timestamp for archive name
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
@@ -42,9 +42,17 @@ LOG_FILES=$(find "$LOG_DIR" -maxdepth 1 -type f \( \
 # Check if any log files were found
 [[ -z "$LOG_FILES" ]] && { echo "No log files found in $LOG_DIR"; exit 0; }
 
+# Check read permissions for each file
+for file in $LOG_FILES; do
+     [[ ! -r "$file" ]] && { echo "Error: No read permission for file '$file'. Aborting archive creation."; exit 1; }
+done
+
 # Count files
 FILE_COUNT=$(echo "$LOG_FILES" | wc -l)
 echo "Found $FILE_COUNT log files to archive"
+
+# Create archive directory
+mkdir -p "$ARCHIVE_DIR"
 
 # Create the tar.gz archive
 if tar -czf "$ARCHIVE_FILE" -C "$LOG_DIR" --exclude="archive" \
