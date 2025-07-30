@@ -9,10 +9,7 @@
 ifconfig | grep broadcast | cut -d " " -f 10 | cut -d "." -f 1,2,3 | uniq > octets.txt
 
 # Check if we found a network
-if [ ! -s octets.txt ]; then
-    echo "Error: Could not detect network. Make sure you're connected to a network."
-    exit 1
-fi
+[[ -s octets.txt ]] || { echo "Error: Could not detect network. Make sure you're connected to a network."; exit 1; }
 
 # Set variable to have the value of octets.txt
 OCTETS=$(cat octets.txt)
@@ -46,9 +43,7 @@ done < octets.txt
 wait
 
 # Display results
-if [ ! -s $OUTPUT_FILE ]; then
-    echo "No active hosts found on any network"
-fi
+[[ -s $OUTPUT_FILE ]] || { echo "No active hosts found on any network"; exit 1; }
 
 # Perform nmap scan
 nmap -sS -iL $OUTPUT_FILE
