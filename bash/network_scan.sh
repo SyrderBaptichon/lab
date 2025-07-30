@@ -2,8 +2,8 @@
 
 ##----- Author : Syrder Baptichon
 ##----- Purpose : A script to auto-detect network IP, search for connected devices, and scan them for open ports 
-##----- Usage : ./network_scan
-##----- PS : The script will miss devices that are not "pingable"
+##----- Usage : sudo ./network_scan
+##----- Note : The script will miss devices that are not "pingable" and uses nmap to scan the network
 
 # Get network ip octets
 ifconfig | grep broadcast | cut -d " " -f 10 | cut -d "." -f 1,2,3 | uniq > octets.txt
@@ -23,7 +23,6 @@ if [ $NETWORK_COUNT -gt 1 ]; then
     echo "Multiple networks detected:"
     nl octets.txt
     echo "Scanning all networks..."
-    OCTETS=$(head -n1 octets.txt)
 else
     echo "Scanning network: $OCTETS.1-254"
 fi
@@ -47,13 +46,9 @@ done < octets.txt
 wait
 
 # Display results
-if [ -s $OUTPUT_FILE ]; then
-    echo ""
-    echo "Active hosts found:"
-    echo "=================="
-    sort -V $OUTPUT_FILE
-    echo ""
-    echo "Total hosts found: $(wc -l < $OUTPUT_FILE)"
-else
-    echo "No active hosts found on network $OCTETS.x"
+if [ ! -s $OUTPUT_FILE ]; then
+    echo "No active hosts found on any network"
 fi
+
+# Perform nmap scan
+nmap -sS -iL $OUTPUT_FILE
