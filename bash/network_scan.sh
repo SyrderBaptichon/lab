@@ -5,11 +5,8 @@
 ##----- Usage : ./network_scan
 ##----- PS : The script will miss devices that are not "pingable"
 
-# Get first octets of network ip
+# Get network ip octets
 ifconfig | grep broadcast | cut -d " " -f 10 | cut -d "." -f 1,2,3 | uniq > octets.txt
-
-# Set variable to have the value of octets.txt
-OCTETS=$(cat octets.txt)
 
 # Check if we found a network
 if [ ! -s octets.txt ]; then
@@ -17,24 +14,34 @@ if [ ! -s octets.txt ]; then
     exit 1
 fi
 
+# Set variable to have the value of octets.txt
+OCTETS=$(cat octets.txt)
+
 # Handle multiple networks
 NETWORK_COUNT=$(wc -l < octets.txt)
 if [ $NETWORK_COUNT -gt 1 ]; then
     echo "Multiple networks detected:"
     nl octets.txt
-    echo "Using first network: $OCTETS"
+    echo "Scanning all networks..."
     OCTETS=$(head -n1 octets.txt)
+else
+    echo "Scanning network: $OCTETS.1-254"
 fi
 
 # Create output file
 OUTPUT_FILE="scan_results.txt"
 > $OUTPUT_FILE
 
-# Scan the network
-for ip in {1..254}
-do
-    ping -c 1 -W 1 $OCTETS.$ip >/dev/null 2>&1 && echo "$OCTETS.$ip" >> $OUTPUT_FILE &
-done
+# Scan all networks found
+while read -r NETWORK_OCTETS; do
+    echo "Scanning $NETWORK_OCTETS.1-254..."
+    
+    # Scan the current network
+    for ip in {1..254}
+    do
+        ping -c 1 -W 1 $NETWORK_OCTETS.$ip >/dev/null 2>&1 && echo "$NETWORK_OCTETS.$ip" >> $OUTPUT_FILE &
+    done
+done < octets.txt
 
 # Wait for all pings to complete
 wait
