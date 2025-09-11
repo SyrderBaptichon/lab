@@ -9,23 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@Log
-public class BookstoreApiApplication implements CommandLineRunner {
-
-    private final DataSource dataSource;
-
-    public BookstoreApiApplication(final DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+public class BookstoreApiApplication {
 
     public static void main(String[] args) {
 		SpringApplication.run(BookstoreApiApplication.class, args);
 	}
-
-    @Override
-    public void run(String... args) throws Exception {
-        log.info("Datasource: " + dataSource.toString());
-        final JdbcTemplate restTemplate = new JdbcTemplate(dataSource);
-        restTemplate.execute("select 1");
-    }
 }
