@@ -1,5 +1,7 @@
 package com.syrder.bookstore_api;
 
+import com.syrder.bookstore_api.domain.dto.AuthorDto;
+import com.syrder.bookstore_api.domain.dto.BookDto;
 import com.syrder.bookstore_api.domain.entities.AuthorEntity;
 import com.syrder.bookstore_api.domain.entities.BookEntity;
 
@@ -31,11 +33,19 @@ public final class TestDataUtil {
                 .build();
     }
 
-    public static BookEntity createTestBookA(final AuthorEntity authorEntity) {
+    public static BookEntity createTestBookEntityA(final AuthorEntity authorEntity) {
         return BookEntity.builder()
                 .isbn("978-1-2345-6789-0")
                 .title("The Shadow in the Attic")
                 .authorEntity(authorEntity)
+                .build();
+    }
+
+    public static BookDto createTestBookDtoA(final AuthorDto authorDto) {
+        return BookDto.builder()
+                .isbn("978-1-2345-6789-0")
+                .title("The Shadow in the Attic")
+                .author(authorDto)
                 .build();
     }
 
