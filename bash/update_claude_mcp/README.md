@@ -24,7 +24,7 @@ A comprehensive script to automatically update your Claude Desktop MCP (Model Co
 
 1. Download the script:
 ```bash
-curl -o update-claude-mcp.sh https://raw.github.com/SyrderBaptichon/lab/main/bash/update_claude_mcp/update-claude-mcp.sh
+curl -o update-claude-mcp.sh https://raw.githubusercontent.com/SyrderBaptichon/lab/refs/heads/main/bash/update_claude_mcp/update-claude-mcp.sh
 ```
 
 2. Make it executable:
