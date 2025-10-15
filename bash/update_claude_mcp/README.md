@@ -24,7 +24,7 @@ A comprehensive script to automatically update your Claude Desktop MCP (Model Co
 
 1. Download the script:
 ```bash
-curl -o update-claude-mcp.sh https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/update-claude-mcp.sh
+curl -o update-claude-mcp.sh https://raw.github.com/SyrderBaptichon/lab/main/bash/update_claude_mcp/update-claude-mcp.sh
 ```
 
 2. Make it executable:
@@ -54,17 +54,6 @@ alias update-mcp='./path/to/update-claude-mcp.sh'
 ./update-claude-mcp.sh --test jetbrains obsidian
 ```
 
-## Available MCP Servers
-
-| Server | Description | Tools | Requirements |
-|--------|-------------|-------|--------------|
-| `jetbrains` | JetBrains IDE integration | 30 tools | None |
-| `obsidian` | Obsidian note-taking | 12 tools | Optional API key |
-| `firecrawl` | Web scraping and crawling | Multiple tools | API key required |
-| `grafana` | Monitoring dashboards | Multiple tools | API key required |
-| `kubernetes` | Kubernetes management | Multiple tools | Kubeconfig |
-| `nasdaq-data-link` | Financial data access | Multiple tools | API key required |
-
 ## Usage
 
 ### Basic Commands
@@ -72,9 +61,6 @@ alias update-mcp='./path/to/update-claude-mcp.sh'
 ```bash
 # Use default servers (jetbrains + obsidian)
 ./update-claude-mcp.sh
-
-# Use only JetBrains
-./update-claude-mcp.sh jetbrains
 
 # Use multiple servers
 ./update-claude-mcp.sh jetbrains obsidian firecrawl grafana
@@ -278,7 +264,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 📖 **Documentation**: Check this README and script help
 - 🐛 **Issues**: Report bugs via GitHub Issues
 - 💬 **Discussions**: Use GitHub Discussions for questions
-- 📧 **Contact**: [Your contact information]
 
 ## Changelog
 
@@ -287,7 +272,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Support for all major Docker MCP Toolkit servers
 - Automatic backup and rollback functionality
 - Comprehensive error handling and validation
-
----
-
-**Made with ❤️ for the Claude Desktop and Docker MCP community**
